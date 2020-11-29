@@ -12,7 +12,8 @@ var default_parameters = {
     o_format: "png",
     dom_element_selector: "",
     fullpage: false,
-    delay: 0
+    delay: 0,
+    vp_deviceScaleFactor:4
 };
 
 /**
@@ -60,6 +61,9 @@ function readParameters(req){
     if (req.query.delay && parseInt(req.query.delay) > 0) {
         request_parameters.delay = parseInt(req.query.delay);
     }
+    if (req.query.vp_deviceScaleFactor && parseInt(req.query.vp_deviceScaleFactor) > 0) {
+        request_parameters.vp_deviceScaleFactor = parseInt(req.query.vp_deviceScaleFactor);
+    }
 
     return Object.assign({}, default_parameters, request_parameters);
 }
@@ -67,7 +71,8 @@ function readParameters(req){
 async function makeScreenshot( params, page ){
     await page.setViewport({
         width: params.vp_width,
-        height: params.vp_height
+        height: params.vp_height,
+        deviceScaleFactor: vp_deviceScaleFactor
     });
 
     await page.goto(params.url, {waitUntil: "networkidle2"});
